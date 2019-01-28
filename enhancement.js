@@ -5,6 +5,7 @@ module.exports = {
 }
 
 function success(item) {
+    checkItemTypes(item);
     let resItem = { ...item };
     let enhancement = resItem.enhancement + 1;
     if (resItem.enhancement < 0 || resItem.enhancement > 20) return resItem;
@@ -47,10 +48,6 @@ function repair(item) {
     return { ...item, durability: 100 };
 }
 
-function canEnhance(item) {
-
-}
-
 function createName(en, item) {
     switch (en) {
         case 16:
@@ -77,4 +74,10 @@ function createName(en, item) {
             }
 
     }
+}
+
+function checkItemTypes(item) {
+    if (typeof item.enhancement === 'string' || typeof item.durability === 'string') throw new Error('i want numbers!');
+    if (typeof item.name === "number") throw new Error('a name');
+    if (!(item.type === 'weapon' || item.type === 'armor')) throw new Error('can only be weapons or armor');
 }

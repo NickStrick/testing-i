@@ -21,7 +21,7 @@ describe('success tests', () => {
             defaultName: 'name'
         });
 
-        expect(enhancement.success({ ...item, durability: 9 }).enhancement).toBe(17);
+        expect(() => enhancement.success({ ...item, enhancement: '20' })).toThrow();
         expect(enhancement.success({ ...item, enhancement: 10 }).enhancement).toBe(10);
         expect(enhancement.success({ ...item, enhancement: 10, durability: 100 }).enhancement).toBe(11);
         expect(enhancement.success({ ...item, enhancement: 10, durability: 100 }).name).toBe('[+11] name');
@@ -30,6 +30,23 @@ describe('success tests', () => {
         expect(actual.enhancement).toEqual(18);
         expect(actual.name).toEqual(`[TRI] ${item.defaultName}`);
 
+    })
+
+    it('should have Restrictions', () => {
+        const item = {
+            name: '[DUO] name',
+            type: 'weapon',
+            durability: 9,
+            enhancement: 17,
+            defaultName: 'name'
+        }
+
+        const actual = enhancement.success(item)
+
+
+        expect(actual.enhancement).toBe(17);
+        expect(enhancement.success({ ...item, durability: 20 }).enhancement).toBe(18);
+        expect(enhancement.success({ ...item, enhancement: 10, durability: 23 }).enhancement).toBe(10);
     })
 })
 describe('fail tests', () => {
