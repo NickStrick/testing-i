@@ -2,7 +2,7 @@ const enhancement = require('./enhancement.js');
 
 describe('success tests', () => {
 
-    test('valid object', () => {
+    it('should have valid object', () => {
         const item = {
             name: '[DUO] name',
             type: 'weapon',
@@ -21,15 +21,14 @@ describe('success tests', () => {
             defaultName: 'name'
         });
 
-        expect(enhancement.success({ ...item, durability: 10 })).toMatchObject({
-            name: '[TRI] name',
-            type: 'weapon',
-            durability: 10,
-            enhancement: 18,
-            defaultName: 'name'
-        });
-        // expect(actual.enhancement).toEqual(18);
-        // expect(actual.name).toEqual(`[DUO] ${item.defaultName}`);
+        expect(enhancement.success({ ...item, durability: 9 }).enhancement).toBe(17);
+        expect(enhancement.success({ ...item, enhancement: 10 }).enhancement).toBe(10);
+        expect(enhancement.success({ ...item, enhancement: 10, durability: 100 }).enhancement).toBe(11);
+        expect(enhancement.success({ ...item, enhancement: 10, durability: 100 }).name).toBe('[+11] name');
+        expect(enhancement.success({ ...item, enhancement: 19 }).name).toBe('[PEN] name');
+
+        expect(actual.enhancement).toEqual(18);
+        expect(actual.name).toEqual(`[TRI] ${item.defaultName}`);
 
     })
 })
@@ -53,6 +52,31 @@ describe('fail tests', () => {
             enhancement: 16,
             defaultName: 'name'
         });
+
+        expect(enhancement.fail({ ...item, enhancement: 15 }).durability).toBe(10)
+
+        expect(enhancement.fail({ ...item, enhancement: 10 }).durability).toBe(15)
+        expect(enhancement.fail({ ...item, enhancement: 5, durability: 100 }).enhancement).toBe(6)
+        expect(enhancement.fail({ ...item, enhancement: 5, durability: 100 }).durability).toBe(100)
+
+    })
+})
+
+describe('Repair tests', () => {
+
+    test('repair working', () => {
+
+        const item = {
+            name: '[DUO] name',
+            type: 'weapon',
+            durability: 20,
+            enhancement: 17,
+            defaultName: 'name'
+        }
+        const actual = enhancement.repair(item)
+
+        expect(actual.durability).toBe(100);
+        expect(actual.name).toBe('[DUO] name');
 
     })
 })

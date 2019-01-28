@@ -10,7 +10,7 @@ function success(item) {
     if (resItem.enhancement < 0 || resItem.enhancement > 20) return resItem;
     if (resItem.enhancement < 15 && resItem.durability < 25) {
         return resItem;
-    } else if (15 <= resItem.enhancement && resItem.durability < 10) {
+    } else if (resItem.enhancement >= 15 && resItem.durability < 10) {
         return resItem;
     }
     createName(enhancement, resItem);
@@ -20,10 +20,11 @@ function success(item) {
 
 function fail(item) {
     let resItem = { ...item };
-    if (resItem.type === 'armor' && resItem.durability <= 5) {
-        return success(resItem);
-    } else if (resItem.type === 'weapon' && resItem.durability <= 7) {
-        return success(resItem);
+    if (resItem.type === 'armor' && resItem.enhancement <= 5) {
+        return success(item);
+    }
+    if (resItem.type === 'weapon' && resItem.enhancement <= 7) {
+        return success(item);
     }
 
     const en = resItem.enhancement;
@@ -44,6 +45,10 @@ function fail(item) {
 
 function repair(item) {
     return { ...item, durability: 100 };
+}
+
+function canEnhance(item) {
+
 }
 
 function createName(en, item) {
