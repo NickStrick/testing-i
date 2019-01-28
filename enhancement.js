@@ -7,9 +7,10 @@ module.exports = {
 function success(item) {
     let resItem = { ...item };
     let enhancement = resItem.enhancement + 1;
-    if (0 < resItem.enhancement < 15 && resItem.durability < 20) {
+    if (resItem.enhancement < 0 || resItem.enhancement > 20) return resItem;
+    if (resItem.enhancement < 15 && resItem.durability < 25) {
         return resItem;
-    } else if (14 < resItem.enhancement < 20 && resItem.durability < 0) {
+    } else if (15 <= resItem.enhancement && resItem.durability < 10) {
         return resItem;
     }
     createName(enhancement, resItem);
@@ -35,7 +36,7 @@ function fail(item) {
         }
     }
 
-    createName(en, resItem);
+    createName(resItem.enhancement, resItem);
 
     return resItem;
 
